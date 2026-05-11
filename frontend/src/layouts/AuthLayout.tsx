@@ -5,10 +5,13 @@ import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../components/Navigation/LanguageSwitcher';
 
 const AuthLayout = () => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
   const { t } = useTranslation();
 
-  // If already authenticated, bounce them to their appropriate dashboard
+  // Attendre la fin du chargement avant de décider
+  if (isLoading) return null;
+
+  // Si déjà connecté, rediriger vers le bon dashboard
   if (isAuthenticated && user) {
     return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/upload'} replace />;
   }
